@@ -1,60 +1,30 @@
-#include "lists.h"
+#ifndef _LISTS_
+#define _LISTS_
+
+#include <stdio.h>
+#include <stdlib.h>
 
 /**
-  * delete_dnodeint_at_index - deletes the node at index
-  * @head: dlinked list
-  * @index: positive integer
-  * Return: integer
-  */
-int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
+ * struct dlistint_s - doubly linked list
+ * @n: integer
+ * @prev: points to the previous node
+ * @next: points to the next node
+ */
+typedef struct dlistint_s
 {
-	unsigned int idx = 0, len = 0;
-	dlistint_t *current = NULL;
+	int n;
+	struct dlistint_s *prev;
+	struct dlistint_s *next;
+} dlistint_t;
 
-	current = *head;
-	if (index == 0)
-	{
-		if (current == NULL)
-			return (-1);
-		*head = (*head)->next;
-		if (*head != NULL)
-			(*head)->prev = NULL;
-		free(current);
-		return (1);
-	}
+size_t print_dlistint(const dlistint_t *x);
+size_t dlistint_len(const dlistint_t *x);
+dlistint_t *add_dnodeint(dlistint_t **head, const int n);
+dlistint_t *add_dnodeint_end(dlistint_t **head, const int n);
+void free_dlistint(dlistint_t *head);
+dlistint_t *get_dnodeint_at_index(dlistint_t *head, unsigned int index);
+int sum_dlistint(dlistint_t *head);
+dlistint_t *insert_dnodeint_at_index(dlistint_t **x, unsigned int idx, int n);
+int delete_dnodeint_at_index(dlistint_t **head, unsigned int index);
 
-	while (current)
-	{
-		len++;
-		current = current->next;
-	}
-
-	current = *head;
-	if (index == len - 1)
-	{
-		if (current == NULL)
-			return (-1);
-		while (current->next)
-			current = current->next;
-		current->prev->next = NULL;
-		free(current);
-		return (1);
-	}
-
-	while (current)
-	{
-		if (index == idx)
-		{
-			if (current->prev != NULL)
-				current->prev->next = current->next;
-			if (current->next != NULL)
-				current->next->prev = current->prev;
-			free(current);
-			return (1);
-		}
-		idx++;
-		current = current->next;
-	}
-	*head = NULL;
-	return (-1);
-}
+#endif
